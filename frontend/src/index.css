@@ -1,0 +1,93 @@
+:root {
+  --bg-color: #73877b; /* Minimalist 1 default */
+  --text-color: #839788;
+  --button-color: #bdbbb6;
+  --highlight-color: #e5d1d0;
+  --secondary-text-color: #f5e4d7;
+  --hover-highlight-color: #d1c3a8; /* Derived from Minimalist 1 palette */
+  --hover-color: #a8b5a2; /* Derived from Minimalist 1 palette */
+  --event-block-color: #e5d1d0; /* Matches --highlight-color */
+}
+.bg-bg-color { background-color: var(--bg-color); }
+.text-color { color: var(--text-color); }
+.border-color { border-color: var(--button-color); }
+.button-bg { background-color: var(--button-color); }
+.highlight-bg { background-color: var(--highlight-color); }
+.secondary-text { color: var(--secondary-text-color); }
+.hover-highlight-bg { background-color: var(--hover-highlight-color); }
+.hover-bg { background-color: var(--hover-color); }
+.event-block-color { background-color: var(--event-block-color); }
+.schedule-container {
+  display: flex;
+  position: relative;
+  gap: 10px;
+}
+.time-labels {
+  width: 80px; /* Increased from 60px for better spacing */
+  position: relative;
+}
+.time-label {
+  position: absolute;
+  transform: translateY(-50%);
+  color: var(--text-color);
+  font-size: 12px; /* Slightly smaller font for readability */
+  padding-right: 8px; /* Add padding to prevent overlap with grid */
+  text-align: right; /* Align right for cleaner look */
+}
+.schedule-grid {
+  flex-grow: 1;
+  position: relative;
+  border-left: 1px solid var(--text-color);
+}
+.event-block, .small-event-block {
+  background-color: var(--event-block-color);
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+.event-block {
+  border: 1px solid var(--text-color);
+}
+.small-event-block {
+  border: 1px dashed var(--text-color);
+}
+.side-panel {
+  transition: right 0.3s ease-in-out;
+}
+.new-event-btn {
+  min-width: 84px;
+  max-width: 480px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+  height: 40px;
+  padding-left: 16px;
+  padding-right: 16px;
+  background-color: var(--button-color);
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: bold;
+  line-height: normal;
+  letter-spacing: 0.015em;
+}
+.new-event-btn:disabled {
+  background-color: var(--button-color);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.event-block:hover .delete-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+.delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 6px;
+}
+.delete-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}

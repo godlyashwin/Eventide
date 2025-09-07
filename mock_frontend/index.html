@@ -1,0 +1,253 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
+    />
+    <title>Stitch Design</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+        :root {
+            --bg-color: #fcfbf8;
+            --text-color: #1c170d;
+            --button-color: #f3f0e7;
+            --highlight-color: #f4c653;
+            --secondary-text-color: #9b844b;
+            --hover-highlight-color: #8f732f; /* For selected day hover/click */
+            --hover-color: #e5e7eb; /* Replaces bg-gray-200 */
+        }
+        .bg-bg-color { background-color: var(--bg-color); }
+        .text-color { color: var(--text-color); }
+        .border-color { border-color: var(--button-color); }
+        .button-bg { background-color: var(--button-color); }
+        .highlight-bg { background-color: var(--highlight-color); }
+        .secondary-text { color: var(--secondary-text-color); }
+        .hover-highlight-bg { background-color: var(--hover-highlight-color); }
+        .hover-bg { background-color: var(--hover-color); }
+    </style>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-bg-color group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-color px-10 py-3">
+          <div class="flex items-center gap-4 text-color">
+            <div class="size-4">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </div>
+            <h2 class="text-color text-lg font-bold leading-tight tracking-[-0.015em]">Eventide</h2>
+          </div>
+          <div class="flex flex-1 justify-end gap-8">
+            <div class="flex items-center gap-9">
+              <a class="text-color text-sm font-medium leading-normal" href="#">Today</a>
+              <a class="text-color text-sm font-medium leading-normal" href="#">Calendars</a>
+              <a class="text-color text-sm font-medium leading-normal" href="#">Inbox</a>
+            </div>
+            <div class="flex gap-2">
+              <button
+                id="manage-schedule-btn"
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 highlight-bg text-color text-sm font-bold leading-normal tracking-[0.015em]"
+              >
+                <span class="truncate">Manage Schedule</span>
+              </button>
+              <button
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 button-bg text-color text-sm font-bold leading-normal tracking-[0.015em]"
+                onclick="window.location.href='settings.html'"
+              >
+                <span class="truncate">Settings</span>
+              </button>
+            </div>
+          </div>
+        </header>
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <p id="selected-day" class="text-color text-base font-medium leading-normal text-center px-4 py-2">Selected: Date Placeholder</p>
+            <div class="flex items-start justify-center gap-6 p-4">
+              <div class="flex min-w-72 max-w-[336px] flex-1 flex-col gap-0.5 min-h-[360px]">
+                <div class="flex items-center p-1 justify-between">
+                  <button>
+                    <div class="text-color flex size-10 items-center justify-center" data-icon="CaretLeft" data-size="18px" data-weight="regular">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                        <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
+                      </svg>
+                    </div>
+                  </button>
+                  <p class="text-color text-base font-bold leading-tight flex-1 text-center pr-10">Date Placeholder</p>
+                </div>
+                <div class="grid grid-cols-7">
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">M</p>
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">W</p>
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">F</p>
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
+                </div>
+              </div>
+              <div class="flex min-w-72 max-w-[336px] flex-1 flex-col gap-0.5 min-h-[360px]">
+                <div class="flex items-center p-1 justify-between">
+                  <p class="text-color text-base font-bold leading-tight flex-1 text-center pl-10">Date Placeholder</p>
+                  <button>
+                    <div class="text-color flex size-10 items-center justify-center" data-icon="CaretRight" data-size="18px" data-weight="regular">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                        <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+                <div class="grid grid-cols-7">
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">M</p>
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">W</p>
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">F</p>
+                  <p class="text-color text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
+                </div>
+              </div>
+            </div>
+            <h2 id="summaryDate" class="text-color text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">October 28, 2024</h2>
+            <div class="flex items-center gap-4 bg-bg-color px-4 min-h-[72px] py-2 justify-between" onclick="window.location.href='day-details.html?date=2024-October-28'">
+              <div class="flex items-center gap-4">
+                <div class="text-color flex items-center justify-center rounded-lg button-bg shrink-0 size-12" data-icon="Circle" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Z"></path>
+                  </svg>
+                </div>
+                <div class="flex flex-col justify-center">
+                  <p class="text-color text-base font-medium leading-normal line-clamp-1">Team Meeting</p>
+                  <p class="secondary-text text-sm font-normal leading-normal line-clamp-2">10:00 AM - 11:00 AM</p>
+                </div>
+              </div>
+              <div class="shrink-0">
+                <div class="text-color flex size-7 items-center justify-center" data-icon="CaretRight" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 bg-bg-color px-4 min-h-[72px] py-2 justify-between" onclick="window.location.href='day-details.html?date=2024-October-28'">
+              <div class="flex items-center gap-4">
+                <div class="text-color flex items-center justify-center rounded-lg button-bg shrink-0 size-12" data-icon="Circle" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Z"></path>
+                  </svg>
+                </div>
+                <div class="flex flex-col justify-center">
+                  <p class="text-color text-base font-medium leading-normal line-clamp-1">Lunch Break</p>
+                  <p class="secondary-text text-sm font-normal leading-normal line-clamp-2">11:00 AM - 12:00 PM</p>
+                </div>
+              </div>
+              <div class="shrink-0">
+                <div class="text-color flex size-7 items-center justify-center" data-icon="CaretRight" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 bg-bg-color px-4 min-h-[72px] py-2 justify-between" onclick="window.location.href='day-details.html?date=2024-October-28'">
+              <div class="flex items-center gap-4">
+                <div class="text-color flex items-center justify-center rounded-lg button-bg shrink-0 size-12" data-icon="Circle" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Z"></path>
+                  </svg>
+                </div>
+                <div class="flex flex-col justify-center">
+                  <p class="text-color text-base font-medium leading-normal line-clamp-1">Project Review</p>
+                  <p class="secondary-text text-sm font-normal leading-normal line-clamp-2">12:00 PM - 1:00 PM</p>
+                </div>
+              </div>
+              <div class="shrink-0">
+                <div class="text-color flex size-7 items-center justify-center" data-icon="CaretRight" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 bg-bg-color px-4 min-h-[72px] py-2 justify-between" onclick="window.location.href='day-details.html?date=2024-October-28'">
+              <div class="flex items-center gap-4">
+                <div class="text-color flex items-center justify-center rounded-lg button-bg shrink-0 size-12" data-icon="Circle" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Z"></path>
+                  </svg>
+                </div>
+                <div class="flex flex-col justify-center">
+                  <p class="text-color text-base font-medium leading-normal line-clamp-1">Client Call</p>
+                  <p class="secondary-text text-sm font-normal leading-normal line-clamp-2">1:00 PM - 2:00 PM</p>
+                </div>
+              </div>
+              <div class="shrink-0">
+                <div class="text-color flex size-7 items-center justify-center" data-icon="CaretRight" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 bg-bg-color px-4 min-h-[72px] py-2 justify-between" onclick="window.location.href='day-details.html?date=2024-October-28'">
+              <div class="flex items-center gap-4">
+                <div class="text-color flex items-center justify-center rounded-lg button-bg shrink-0 size-12" data-icon="Circle" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Z"></path>
+                  </svg>
+                </div>
+                <div class="flex flex-col justify-center">
+                  <p class="text-color text-base font-medium leading-normal line-clamp-1">Design Review</p>
+                  <p class="secondary-text text-sm font-normal leading-normal line-clamp-2">2:00 PM - 3:00 PM</p>
+                </div>
+              </div>
+              <div class="shrink-0">
+                <div class="text-color flex size-7 items-center justify-center" data-icon="CaretRight" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 bg-bg-color px-4 min-h-[72px] py-2 justify-between" onclick="window.location.href='day-details.html?date=2024-October-28'">
+              <div class="flex items-center gap-4">
+                <div class="text-color flex items-center justify-center rounded-lg button-bg shrink-0 size-12" data-icon="Circle" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Z"></path>
+                  </svg>
+                </div>
+                <div class="flex flex-col justify-center">
+                  <p class="text-color text-base font-medium leading-normal line-clamp-1">Wrap Up</p>
+                  <p class="secondary-text text-sm font-normal leading-normal line-clamp-2">3:00 PM - 4:00 PM</p>
+                </div>
+              </div>
+              <div class="shrink-0">
+                <div class="text-color flex size-7 items-center justify-center" data-icon="CaretRight" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="flex px-4 py-3 justify-end">
+              <button
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 button-bg text-color text-sm font-bold leading-normal tracking-[0.015em]"
+              >
+                <span class="truncate">Summarize Calendar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="scriptIndex.js"></script>
+    <script type="module" src="scriptPalette.js"></script>
+    <script type="module" src="globalVars.js"></script>
+  </body>
+</html>

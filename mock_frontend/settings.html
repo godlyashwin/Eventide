@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
+    />
+    <title>Settings - Stitch Design</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+        :root {
+            --bg-color: #fcfbf8;
+            --text-color: #1c170d;
+            --button-color: #f3f0e7;
+            --highlight-color: #f4c653;
+            --secondary-text-color: #9b844b;
+        }
+        .bg-bg-color { background-color: var(--bg-color); }
+        .text-color { color: var(--text-color); }
+        .border-color { border-color: var(--button-color); }
+        .button-bg { background-color: var(--button-color); }
+        .highlight-bg { background-color: var(--highlight-color); }
+        .secondary-text { color: var(--secondary-text-color); }
+    </style>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-bg-color group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-color px-10 py-3">
+          <div class="flex items-center gap-4 text-color">
+            <div class="size-4">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </div>
+            <h2 class="text-color text-lg font-bold leading-tight tracking-[-0.015em]">Eventide - Settings</h2>
+          </div>
+          <div class="flex flex-1 justify-end gap-8">
+            <button
+              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 button-bg text-color text-sm font-bold leading-normal tracking-[0.015em]"
+              onclick="window.location.href='index.html'"
+            >
+              <span class="truncate">Back to Calendar</span>
+            </button>
+          </div>
+        </header>
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <h2 class="text-color text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Appearance</h2>
+            <div class="flex items-center gap-4 bg-bg-color px-4 min-h-[72px] py-2 justify-between">
+              <div class="flex flex-col justify-center">
+                <p class="text-color text-base font-medium leading-normal line-clamp-1">Color Palette</p>
+                <p class="secondary-text text-sm font-normal leading-normal line-clamp-2">Choose a color scheme for the calendar</p>
+              </div>
+              <select id="palette-select" class="border border-color rounded-lg p-2 w-32 text-color text-sm">
+                <option value="Default">Default</option>
+                <option value="Minimalist 1">Minimalist 1</option>
+                <option value="Minimalist 2">Minimalist 2</option>
+                <option value="Radiant">Radiant</option>
+                <option value="Calm">Calm</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="scriptSettings.js"></script>
+  </body>
+</html>

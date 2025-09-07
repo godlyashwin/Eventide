@@ -1,0 +1,473 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
+    />
+    <title>Day Details - Stitch Design</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+        /* Root variables for palette-based theming */
+        :root {
+            --bg-color: #fcfbf8; /* Light cream background */
+            --text-color: #1c170d; /* Dark brown text */
+            --button-color: #f3f0e7; /* Light beige button */
+            --highlight-color: #f4c653; /* Golden yellow highlight */
+            --secondary-text-color: #9b844b; /* Muted gold secondary text */
+            --hover-highlight-color: #8f732f; /* Darker gold for hover */
+            --hover-color: #e5e7eb; /* Light gray for hover */
+            --event-block-color: #d1c4e9; /* Light purple for event blocks */
+        }
+
+        /* Utility classes for palette */
+        .bg-bg-color { background-color: var(--bg-color); }
+        .text-color { color: var(--text-color); }
+        .border-color { border-color: var(--button-color); }
+        .button-bg { background-color: var(--button-color); }
+        .highlight-bg { background-color: var(--highlight-color); }
+        .secondary-text { color: var(--secondary-text-color); }
+        .hover-highlight-bg { background-color: var(--hover-highlight-color); }
+        .hover-bg { background-color: var(--hover-color); }
+        .event-block-color { background-color: var(--event-block-color); }
+
+        /* General layout */
+        body {
+            font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Toolbar with New Event, Undo, and Redo buttons */
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .new-event-btn, #undo-btn, #redo-btn, #improve-schedule-btn {
+            background-color: var(--button-color);
+            color: var(--text-color);
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+
+        .new-event-btn:hover, #undo-btn:hover, #redo-btn:hover {
+            background-color: var(--hover-highlight-color);
+        }
+
+        #undo-btn:disabled, #redo-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* Date display */
+        #date-display {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        /* Grid interval and time range inputs */
+        #grid-interval, #grid-start-time, #grid-end-time {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid var(--button-color);
+            border-radius: 4px;
+            margin-right: 8px;
+            margin-bottom: 16px;
+        }
+
+        /* Schedule container */
+        .schedule-container {
+            display: flex;
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        /* Time labels */
+        .time-labels {
+            position: absolute;
+            top: 120;
+            left: 100;
+            width: 100px;
+            font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
+        }
+
+        .time-label {
+            position: absolute;
+            width: 100px;
+            height: 60px;
+            line-height: 20px;
+            text-align: right;
+            padding-right: 10px;
+            font-size: 0.8rem;
+            color: var(--secondary-text-color);
+            font-weight: 500;
+        }
+
+        /* Schedule grid */
+        .schedule-grid {
+            position: relative;
+            width: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1) 1px, transparent 1px);
+            background-size: 100% 60px;
+            border-left: 1px solid var(--button-color);
+            border-bottom: 1px solid var(--button-color);
+            user-select: none;
+            margin-left: 60px;
+            overflow-y: auto;
+        }
+
+        /* Event blocks (normal and small) */
+        .event-block, .small-event-block {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            border-radius: 4px;
+            padding: 4px;
+            cursor: pointer;
+        }
+
+        .event-block {
+            background-color: var(--highlight-color);
+        }
+
+        .small-event-block {
+            background-color: var(--highlight-color);
+            height: 20px;
+        }
+
+        .event-block.dragging, .small-event-block.dragging {
+            opacity: 0.7;
+        }
+
+        .event-block.active, .small-event-block.active {
+            background-color: var(--hover-highlight-color);
+            border: 2px solid var(--button-color);
+        }
+
+        /* Delete button */
+        .event-block .delete-btn,
+        .small-event-block .delete-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 2px 6px;
+            line-height: 1;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            display: none;
+            color: var(--text-color);
+        }
+
+        .event-block:hover .delete-btn,
+        .small-event-block:hover .delete-btn {
+            display: block;
+        }
+
+        .delete-btn:hover {
+            color: var(--hover-color);
+        }
+
+        /* Drag handles */
+        .drag-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: var(--text-color);
+            border-radius: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: ns-resize;
+            z-index: 5;
+        }
+
+        .drag-handle.top {
+            top: -6px;
+        }
+
+        .drag-handle.bottom {
+            bottom: -6px;
+        }
+
+        /* Event block content */
+        .event-block .flex, .small-event-block .flex {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-block p, .small-event-block p {
+            margin: 2px 0;
+        }
+
+        .event-block .text-color, .small-event-block .text-color {
+            color: var(--text-color);
+        }
+
+        .event-block .secondary-text, .small-event-block .secondary-text {
+            color: var(--secondary-text-color);
+        }
+
+        .event-block .event-description:hover, .small-event-block .event-description:hover {
+            color: var(--hover-color);
+        }
+
+        .event-block .edit-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color);
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        .event-block .edit-btn:hover {
+            color: var(--hover-color);
+        }
+
+        /* Side panel for small event blocks */
+        #side-panel {
+            position: absolute;
+            right: -300px;
+            width: 280px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--button-color);
+            border-radius: 4px;
+            padding: 16px;
+            transition: right 0.3s;
+            z-index: 10;
+        }
+
+        #side-panel.active {
+            right: 10px;
+            display: block;
+        }
+
+        #side-panel h3, #side-panel p, #side-panel button {
+            margin: 5px 0;
+            color: var(--text-color);
+            font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
+        }
+
+        #side-panel button:hover {
+            color: var(--hover-color);
+        }
+
+        #side-panel-description:hover {
+            color: var(--secondary-text-color);
+        }
+
+        /* Modal for event creation/editing */
+        #event-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+        }
+
+        #event-modal.active {
+            display: flex;
+        }
+
+        #event-modal form {
+            background: var(--bg-color);
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .modal-content input, .modal-content textarea {
+            padding: 8px;
+            border: 1px solid var(--button-color);
+            border-radius: 4px;
+            font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
+        }
+
+        .modal-content button {
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
+        }
+
+        #save-event-btn {
+            background-color: var(--button-color);
+            color: var(--text-color);
+        }
+
+        #save-event-btn:hover {
+            background-color: var(--hover-highlight-color);
+        }
+
+        #cancel-event-btn {
+            background-color: #cccccc;
+        }
+
+        #cancel-event-btn:hover {
+            background-color: #b3b3b3;
+        }
+
+        /* No events message */
+        #no-events {
+            display: none;
+            text-align: center;
+            color: var(--text-color);
+            margin-top: 20px;
+        }
+        /* Lock button */
+        .lock-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 2px 6px;
+            line-height: 1;
+            font-size: 12px;
+            position: relative;
+            margin-right: 20px; /* Space to avoid overlap with delete button */
+        }
+
+        /* Middle drag handle */
+        .drag-handle.middle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            /*background-color: var(--secondary-text-color);*/
+            border-radius: 0; /* Square shape to distinguish from top/bottom */
+            top: 50%;
+            transform: translate(-50%, -50%);
+            cursor: move; /* Indicates draggable */
+            z-index: 5;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-bg-color group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-color px-10 py-3">
+          <div class="flex items-center gap-4 text-color">
+            <div class="size-4">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </div>
+            <h2 class="text-color text-lg font-bold leading-tight tracking-[-0.015em]">Eventide - Day Details</h2>
+          </div>
+          <div class="flex flex-1 justify-end gap-8">
+            <button
+              id="improve-schedule-btn" class="new-event-btn font-bold" disabled>Improve Schedule</button>
+            <button
+              id="new-event-btn"
+              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 highlight-bg text-color text-sm font-bold leading-normal tracking-[0.015em]"
+            >
+              <span class="truncate">New Event</span>
+            </button>
+            <button id="undo-btn" class="new-event-btn" disabled>Undo</button>
+            <button id="redo-btn" class="new-event-btn" disabled>Redo</button>
+            <button
+              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 button-bg text-color text-sm font-bold leading-normal tracking-[0.015em]"
+              onclick="window.location.href='index.html'"
+            >
+              <span class="truncate">Back to Calendar</span>
+            </button>
+          </div>
+        </header>
+        <div class="px-40 flex flex-1 justify-center py-5 relative">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex items-center gap-4 px-4 pb-3 pt-5">
+              <h2 id="date-display" class="text-color text-[22px] font-bold leading-tight tracking-[-0.015em] px-12">No date selected</h2>
+              <div class="flex flex-col">
+                <label for="grid-interval" class="text-color text-sm font-medium mb-1">Grid Interval (min)</label>
+                <input
+                  id="grid-interval"
+                  type="number"
+                  min="1"
+                  value="15"
+                  class="w-20 border border-color rounded-lg p-2 text-color text-sm bg-bg-color"
+                  style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'
+                />
+              </div>
+              <div class="flex flex-col">
+                <label for="grid-start-time" class="text-color text-sm font-medium mb-1">Start Time</label>
+                <input
+                  id="grid-start-time"
+                  type="time"
+                  value="00:00"
+                  class="w-[120px] border border-color rounded-lg p-2 text-color text-sm bg-bg-color"
+                  style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'
+                />
+              </div>
+              <div class="flex flex-col">
+                <label for="grid-end-time" class="text-color text-sm font-medium mb-1">End Time</label>
+                <input
+                  id="grid-end-time"
+                  type="time"
+                  value="11:59"
+                  class="w-[120px] border border-color rounded-lg p-2 text-color text-sm bg-bg-color"
+                  style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'
+                />
+              </div>
+            </div>
+            <p id="no-events" class="text-color text-base font-medium leading-normal px-4">No events scheduled</p>
+            <div class="time-labels" id="time-labels"></div>
+            <div class="schedule-grid"></div>
+            <div id="side-panel" class="side-panel">
+              <h3 id="side-panel-title" class="text-color text-base font-medium leading-normal"></h3>
+              <p id="side-panel-time" class="secondary-text text-sm font-normal leading-normal"></p>
+              <p id="side-panel-description" class="text-color text-sm font-normal leading-normal mt-2" style="display: none;"></p>
+              <button id="side-panel-edit-btn" class="button-bg text-color text-sm font-bold mt-2 px-4 py-2 rounded-lg">Edit</button>
+            </div>
+          </div>
+        </div>
+        <div id="event-modal">
+          <form>
+            <h3 class="text-color text-lg font-bold mb-4">Event Details</h3>
+            <label class="block text-color text-sm font-medium mb-1">Title</label>
+            <input id="event-title" type="text" class="w-full border border-color rounded-lg p-2 text-color text-sm mb-4" />
+            <label class="block text-color text-sm font-medium mb-1">Start Time</label>
+            <input id="event-start" type="time" class="w-full border border-color rounded-lg p-2 text-color text-sm mb-4" />
+            <label class="block text-color text-sm font-medium mb-1">End Time</label>
+            <input id="event-end" type="time" class="w-full border border-color rounded-lg p-2 text-color text-sm mb-4" />
+            <label class="block text-color text-sm font-medium mb-1">Description</label>
+            <textarea id="event-description" class="w-full border border-color rounded-lg p-2 text-color text-sm mb-4" rows="4"></textarea>
+            <div class="flex gap-2">
+              <button id="save-event-btn" type="button" class="flex-1 button-bg text-color text-sm font-bold py-2 rounded-lg">Save</button>
+              <button id="cancel-event-btn" type="button" class="flex-1 button-bg text-color text-sm font-bold py-2 rounded-lg">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script unsafe-eval type="module" src="scriptDayDetails.js"></script>
+  </body>
+</html>
